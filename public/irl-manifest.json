@@ -1,0 +1,7 @@
+{
+  "name": "Antler - Hello World Example",
+  "description": "A simple example app that displays a welcome message when opened in Antler or another IRL Browser",
+  "icon": "./antler-icon.webp",
+  "type": "event",
+  "permissions": ["profile"]
+}

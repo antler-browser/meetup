@@ -17,7 +17,7 @@ export enum SSEEventType {
   MEETUP_ENDED = 'meetup-ended',
 }
 
-const HEARTBEAT_INTERVAL_MS = 30000 // 30 seconds
+const HEARTBEAT_INTERVAL_MS = 10000 // 10 seconds (Railway closes idle SSE connections after ~14s)
 
 /**
  * Build a connection established event

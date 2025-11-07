@@ -20,9 +20,6 @@ if (process.env.NODE_ENV !== 'production') {
     origin: ['http://localhost:5173', 'http://localhost:3000'],
     credentials: true,
   }))
-} else {
-  app.use('/*', serveStatic({ root: './client/dist' }))
-  app.get('/*', serveStatic({ path: './client/dist/index.html' }))
 }
 
 /**
@@ -141,6 +138,12 @@ app.get('/health', (c) => {
     activeSSEConnections: getActiveConnectionCount(),
   })
 })
+
+// Serve static files from client build (production only)
+if (process.env.NODE_ENV === 'production') {
+  app.use('/*', serveStatic({ root: './client/dist' }))
+  app.get('/*', serveStatic({ path: './client/dist/index.html' }))
+}
 
 // Start the server
 const port = 3000

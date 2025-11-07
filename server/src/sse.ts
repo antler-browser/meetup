@@ -133,7 +133,7 @@ export function setupSSERoute(app: Hono) {
       })
 
       // Keep the stream open
-      await stream.sleep(14400) // 4 hours
+      await stream.sleep(14400000) // 4 hours
     })
   })
 }

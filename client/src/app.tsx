@@ -211,8 +211,8 @@ export function App() {
     }
   }
 
-  // Show fallback message if not in IRL Browser
-  if (!isIRLBrowser) {
+  // Show fallback message if not in IRL Browser and no users are present
+  if (!isIRLBrowser && users.length === 0) {
     return (
       <div className="min-h-screen bg-white">
         <div className="grid md:grid-cols-2 min-h-screen">
@@ -287,7 +287,7 @@ export function App() {
   }
 
   // Show loading state while waiting for profile
-  if (!profile) {
+  if (!profile && users.length === 0) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50">
         <div className="grid md:grid-cols-2 min-h-screen">

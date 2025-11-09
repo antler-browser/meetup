@@ -28,7 +28,7 @@ An IRL Browser mini app for meetup check-ins with real-time attendee list. Uses 
 ### Server (`/server/`)
 - `/server/src/index.ts` - Hono server with check-in API and SSE for real-time updates
 - `/server/src/db/index.ts` - Database operations using Drizzle ORM
-- `/server/src/db/client.ts` - Database client with environment-aware connection (local SQLite or Turso)
+- `/server/src/db/client.ts` - Database client for SQLite connections
 - `/server/src/db/models/index.ts` - Database models
 - `/server/src/db/schema.ts` - Drizzle schema definition for attendees table
 - `/server/src/db/migrations/` - Drizzle Kit migrations folder
@@ -49,7 +49,7 @@ An IRL Browser mini app for meetup check-ins with real-time attendee list. Uses 
 
 ## Development Commands
 
-All commands run from the workspace root:
+Useful commands to run from the workspace root:
 
 ```bash
 pnpm install          # Install all workspace dependencies
@@ -57,26 +57,34 @@ pnpm run dev          # Start both client (localhost:5173) and server (localhost
 pnpm run dev:client   # Start only client dev server
 pnpm run dev:server   # Start only server dev server
 pnpm run build        # Build shared package, then server, then client
-```
-
-### Database Commands (from `/server/`)
-
-```bash
-pnpm db:generate      # Check schema and generate migration files
-pnpm db:push          # Run migrations
+pnpm db:generate      # Check schema from server/src/db/schema.ts and generate migration files
+pnpm db:push          # Manually run migrations
 pnpm db:studio        # Open Drizzle Studio visual database manager
 ```
 
 **Note**: This is a pnpm workspace. All dependencies are installed at the root level. Shared dependencies (@noble/curves, base58-universal, jwt-decode) are hoisted to the workspace root.
 
-## Architecture Overview
+## Self-Hosting with Docker
 
-### Database Architecture (Drizzle ORM + Turso)
+The app is designed to be easily self-hosted using Docker.
 
-The application uses Drizzle ORM with an environment-aware database connection:
+### Quick Start
+```bash
+docker compose up          # Build and start the app
+```
 
-**Development**: Local SQLite file at `/server/data/meetup.db` 
-**Production**: Turso remote database (update `DATABASE_DIALECT`, `DATABASE_URL` and `DATABASE_AUTH_TOKEN` environment variables in the Railway service)
+### Key Files
+- `Dockerfile` - Multi-stage build (builder + production image)
+- `docker-compose.yml` - Service configuration with volume mounting
+- `.dockerignore` - Build optimization (excludes node_modules, .git, etc.)
+
+**Volume Mounting**: SQLite database persisted in named volume `meetup-data`
+
+**Backup**: `docker compose cp meetup:/app/server/data/meetup.db ./server/data/meetup.db`
+
+## Environment Variables
+
+- `DATABASE_URL` - SQLite database file path (default: `file:./data/meetup.db`)
 
 ### JWT Verification Pipeline (`/shared/src/jwt.ts`)
 The shared package exports `decodeAndVerifyJWT` which is used by both client and server:
@@ -131,7 +139,7 @@ That's it! The simulator will:
 - **Hono** - Web framework
 - **@hono/node-server** - Node.js adapter
 - **Drizzle ORM** - TypeScript ORM for database operations
-- **@libsql/client** - LibSQL client (compatible with SQLite and Turso)
+- **@libsql/client** - LibSQL/SQLite client for database operations
 
 ### Shared (hoisted to workspace root)
 - **@noble/curves** - Ed25519 signature verification

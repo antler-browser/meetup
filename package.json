@@ -15,7 +15,7 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "predev": "node scripts/update-metadata.js && pnpm --filter=@meetup/shared build",
+    "predev": "node scripts/update-metadata.js && pnpm --filter=@meetup/shared build && pnpm --filter=./server db:push",
     "dev": "pnpm --parallel --filter=@meetup/shared --filter=./client --filter=./server dev",
     "dev:client": "pnpm --filter=./client dev",
     "dev:server": "pnpm --filter=./server dev",

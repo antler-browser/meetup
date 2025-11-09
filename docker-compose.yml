@@ -1,0 +1,19 @@
+services:
+  meetup:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=file:/app/server/data/meetup.db
+    volumes:
+      # Persist SQLite database
+      - meetup-data:/app/server/data
+    restart: unless-stopped
+    command: sh -c "cd /app && pnpm --filter ./server db:push && node server/dist/index.js"
+
+volumes:
+  meetup-data:
+    driver: local

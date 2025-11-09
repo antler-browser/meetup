@@ -14,7 +14,6 @@ import { broadcastNewUser, broadcastUserLeft, setupSSERoute, getActiveConnection
 const app = new Hono()
 
 // Enable CORS for client requests (needed in development when client runs on different port)
-// Serve static files from client build (production only)
 if (process.env.NODE_ENV !== 'production') {
   app.use('/*', cors({
     origin: ['http://localhost:5173', 'http://localhost:3000'],
@@ -168,7 +167,8 @@ app.get('/health', (c) => {
   })
 })
 
-// Serve static files from client build (production only)
+// Development - Vite serves client at :5173, Hot Module Replacement (HMR) is enabled
+// Production - Serve static files from client build
 if (process.env.NODE_ENV === 'production') {
   app.use('/*', serveStatic({ root: './client/dist' }))
   app.get('/*', serveStatic({ path: './client/dist/index.html' }))

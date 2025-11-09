@@ -1,0 +1,55 @@
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Build outputs (will be generated during build)
+dist/
+**/dist/
+.next/
+out/
+
+# Development files
+.git/
+.github/
+.vscode/
+.idea/
+
+# Environment files (should be set via docker-compose or runtime)
+.env
+.env.local
+.env.*.local
+**/.env
+
+# Database files (local development only)
+server/data/*.db
+server/data/*.db-shm
+server/data/*.db-wal
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Testing
+coverage/
+.nyc_output/
+
+# Misc
+*.swp
+*.swo
+*~
+.cache/
+temp/
+tmp/
+
+# Documentation (not needed in production)
+README.md
+CLAUDE.md
+docs/

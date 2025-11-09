@@ -19,7 +19,7 @@ This is a pnpm workspace monorepo with three packages:
 
 ## Getting Started
 
-Commands to run from the workspace root:
+Useful commands to run:
 
 ```bash
 pnpm install          # Install all workspace dependencies
@@ -27,13 +27,8 @@ pnpm run dev          # Start both client (localhost:5173) and server (localhost
 pnpm run dev:client   # Start only client
 pnpm run dev:server   # Start only server
 pnpm run build        # Build all packages (shared → server → client)
-```
-
-Commands to run from the server package:
-
-```bash
-pnpm db:generate      # Check schema and generate migration files
-pnpm db:push          # Run migrations
+pnpm db:generate      # Check schema from server/src/db/schema.ts and generate migration files
+pnpm db:push          # Manually run migrations
 pnpm db:studio        # Open Drizzle Studio visual database manager
 ```
 
@@ -46,28 +41,13 @@ pnpm db:studio        # Open Drizzle Studio visual database manager
 5. Open `http://localhost:5173` in your browser. IRL Browser Simulator is enabled in development mode, so you will instantly login with a test profile (Paul Morphy). 
 6. If you need to test multiple users using your app, click the IRL Browser Simulator debug panel "Open as X" button to open a new tab and simulate multiple users.
 
-### Running the app in production
-We use Railway to host the server (REST API + SSE) and Turso to host the SQLite database. Both have a free tier.
+### Self-Hosting with Docker
 
-1. Create a Turso database. (and Sign up for a Turso account if you don't have one yet)
-- Install Turso CLI: https://docs.turso.tech/cli/installation
-- Create account and database:
-   ```bash
-   turso auth signup
-   turso db create meetup
-   ```
-- Get credentials:
-   ```bash
-   turso db show meetup --url      # Keep this value for DATABASE_URL
-   turso db tokens create meetup   # Keep this value for DATABASE_AUTH_TOKEN
-   ```
+The app is designed to be easily self-hosted using Docker.
 
-2. Create a Railway service. (and Sign up for a Railway account if you don't have one yet)
-- Add the following environment variables to the Railway service:
-   - `DATABASE_DIALECT` - `turso`
-   - `DATABASE_URL` - From previous step
-   - `DATABASE_AUTH_TOKEN` - From previous step
-- Deploy your service
+1. Run `docker compose up` to start the app
+2. The app will be available at `http://localhost:3000`
+3. SQLite database is persisted in a Docker volume, so you can stop and restart your app without losing any data.
 
 ### Debugging IRL Browser Mini Apps
 The IRL Browser Simulator injects the `window.irlBrowser` API into a regular browser, allowing you to test your mini app locally without needing the Antler mobile app.
@@ -101,7 +81,7 @@ That's it! The simulator will:
 - **Hono** - REST API framework
 - **@hono/node-server** - Node.js adapter
 - **Drizzle ORM** - TypeScript ORM for database operations
-- **@libsql/client** (development) **turso-js** (production) - LibSQL client for database operations
+- **@libsql/client** - LibSQL/SQLite client for database operations
 - **Server-Sent Events (SSE)** - Real-time updates
 
 ### Shared (shared/)

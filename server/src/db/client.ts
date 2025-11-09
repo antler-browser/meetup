@@ -10,10 +10,9 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 dotenv.config({ path: resolve(__dirname, '../../.env') })
 
-// Database connection using environment variables
+// Database connection using SQLite (file or in-memory)
 const client = createClient({
-  url: process.env.DATABASE_URL!,
-  authToken: process.env.DATABASE_AUTH_TOKEN,
+  url: process.env.DATABASE_URL as string
 })
 
 export const db = drizzle(client, { schema })

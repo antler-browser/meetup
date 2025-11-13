@@ -49,6 +49,15 @@ The app is designed to be easily self-hosted using Docker.
 2. The app will be available at `http://localhost:3000`
 3. SQLite database is persisted in a Docker volume, so you can stop and restart your app without losing any data.
 
+### Deploying using Railway
+
+1. Railway uses the Dockerfile in the root of the repository to build the app.
+2. Create a new Railway project.
+3. Add the following environment variables:
+   - `DATABASE_URL` - The URL of the SQLite database (e.g. `file:/app/server/data/meetup.db`)
+
+**Note:** Because the database is stored inside the container, it will reset every time you redeploy the app. You can use a persistent volume to persist the database, or self-host using Docker Compose. The Docker Compose file uses volumes to persist the database.
+
 ### Debugging IRL Browser Mini Apps
 The IRL Browser Simulator injects the `window.irlBrowser` API into a regular browser, allowing you to test your mini app locally without needing the Antler mobile app.
 
